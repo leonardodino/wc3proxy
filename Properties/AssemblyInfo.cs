@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WC3Proxy")]
-[assembly: AssemblyDescription("Foole's Warcraft 3 Proxy for Warcraft III 1.21-1.23")]
+[assembly: AssemblyDescription("Foole's Warcraft 3 Proxy for Warcraft III 1.21-1.24")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WC3Proxy")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.3.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
