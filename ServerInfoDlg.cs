@@ -55,6 +55,7 @@ namespace Foole.WC3Proxy
         {
             InitializeComponent();
 
+            cbxWC3Version.Items.Add(new WC3Version(0x18, "1.24"));
             cbxWC3Version.Items.Add(new WC3Version(0x17, "1.23"));
             cbxWC3Version.Items.Add(new WC3Version(0x16, "1.22"));
             cbxWC3Version.Items.Add(new WC3Version(0x15, "1.21"));
