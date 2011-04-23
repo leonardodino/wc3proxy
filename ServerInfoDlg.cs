@@ -20,13 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-//using System.Data;
-//using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Net;
+using System.Windows.Forms;
 
 namespace Foole.WC3Proxy
 {
@@ -55,10 +50,13 @@ namespace Foole.WC3Proxy
         {
             InitializeComponent();
 
+            cbxWC3Version.Items.Add(new WC3Version(0x1a, "1.26"));
+            cbxWC3Version.Items.Add(new WC3Version(0x19, "1.25"));
             cbxWC3Version.Items.Add(new WC3Version(0x18, "1.24"));
             cbxWC3Version.Items.Add(new WC3Version(0x17, "1.23"));
             cbxWC3Version.Items.Add(new WC3Version(0x16, "1.22"));
             cbxWC3Version.Items.Add(new WC3Version(0x15, "1.21"));
+            cbxWC3Version.Items.Add(new WC3Version(0x1b, "1.27 (Untested)"));
         }
 
         public IPHostEntry Host

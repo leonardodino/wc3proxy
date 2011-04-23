@@ -280,7 +280,14 @@ namespace Foole.WC3Proxy
             mProxies = new List<TcpProxy>();
 
             mListener = new Listener(new GotConnectionDelegate(GotConnection));
-            mListener.Run();
+            try
+            {
+                mListener.Run();
+            }
+            catch (SocketException ex)
+            {
+                MessageBox.Show("Unable to start listener\n" + ex.Message);
+            }
         }
 
         private void GotConnection(Socket ClientSocket)

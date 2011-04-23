@@ -67,16 +67,7 @@ namespace Foole.Net
 			IPEndPoint EndPoint = new IPEndPoint(mAddress, mPort);
 
 			ListenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-            // This gets a SocketException:
-            // "Only one usage of each socket address (protocol/network address/port) is normally permitted"
-            try
-            {
-                ListenSocket.Bind(EndPoint);
-            } catch (SocketException)
-            {
-                Console.WriteLine("Unable to bind to port {0}", mPort);
-                return;
-            }
+            ListenSocket.Bind(EndPoint);
 
 			mPort = LocalEndPoint.Port;
 			ListenSocket.Listen(20);

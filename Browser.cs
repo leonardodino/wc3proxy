@@ -21,9 +21,9 @@ THE SOFTWARE.
  */
 using System;
 using System.IO;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Timers;
 
 namespace Foole.WC3Proxy

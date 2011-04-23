@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C# Express 2005
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WC3Proxy", "WC3Proxy.csproj", "{B8EFC5FD-C38B-4686-9816-236352E6D092}"
 EndProject
 Global
