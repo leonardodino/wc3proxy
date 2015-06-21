@@ -29,6 +29,7 @@ using System.Windows.Forms;
 using Microsoft.Win32; // for Registry
 
 using Foole.Net; // For Listener
+using System.IO;
 
 namespace Foole.WC3Proxy
 {
@@ -206,8 +207,19 @@ namespace Foole.WC3Proxy
 
             if (program == null)
             {
-                MessageBox.Show("Unable to locate Warcraft 3 executable");
-                return;
+
+                string currentDir = Directory.GetCurrentDirectory();
+
+                program = Path.Combine(currentDir, "war3.exe");
+
+                if (!File.Exists(program))
+                {
+
+                    MessageBox.Show("Unable to locate Warcraft 3 executable");
+                    return;
+
+                }
+
             }
 
             try
