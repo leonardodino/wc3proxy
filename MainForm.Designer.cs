@@ -38,22 +38,23 @@ namespace Foole.WC3Proxy
             System.Windows.Forms.ToolStripMenuItem mnuTools;
             System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.mnuToolsLaunchWarcraft = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblGamePort = new System.Windows.Forms.Label();
+            this.lblServerAddress = new System.Windows.Forms.Label();
+            this.lblMap = new System.Windows.Forms.Label();
+            this.lblGameName = new System.Windows.Forms.Label();
+            this.lblPlayers = new System.Windows.Forms.Label();
+            this.lblClientCount = new System.Windows.Forms.Label();
             this.mnuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileChangeServer = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuToolsLaunchWarcraft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.lblGameName = new System.Windows.Forms.Label();
-            this.lblMap = new System.Windows.Forms.Label();
-            this.lblGamePort = new System.Windows.Forms.Label();
-            this.lblServerAddress = new System.Windows.Forms.Label();
-            this.lblPlayers = new System.Windows.Forms.Label();
-            this.lblClientCount = new System.Windows.Forms.Label();
             this.mIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.mIconMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuIconExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearRecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lblGameName2 = new System.Windows.Forms.Label();
             lblMap2 = new System.Windows.Forms.Label();
             lblGamePort2 = new System.Windows.Forms.Label();
@@ -62,159 +63,80 @@ namespace Foole.WC3Proxy
             lblClients2 = new System.Windows.Forms.Label();
             mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.mnuMain.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            this.mnuMain.SuspendLayout();
             this.mIconMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblGameName2
             // 
             lblGameName2.AutoSize = true;
-            lblGameName2.Location = new System.Drawing.Point(3, 28);
+            lblGameName2.Location = new System.Drawing.Point(3, 25);
             lblGameName2.Name = "lblGameName2";
-            lblGameName2.Size = new System.Drawing.Size(67, 13);
+            lblGameName2.Size = new System.Drawing.Size(65, 12);
             lblGameName2.TabIndex = 3;
             lblGameName2.Text = "Game name:";
             // 
             // lblMap2
             // 
             lblMap2.AutoSize = true;
-            lblMap2.Location = new System.Drawing.Point(3, 48);
+            lblMap2.Location = new System.Drawing.Point(3, 43);
             lblMap2.Name = "lblMap2";
-            lblMap2.Size = new System.Drawing.Size(31, 13);
+            lblMap2.Size = new System.Drawing.Size(29, 12);
             lblMap2.TabIndex = 5;
             lblMap2.Text = "Map:";
             // 
             // lblGamePort2
             // 
             lblGamePort2.AutoSize = true;
-            lblGamePort2.Location = new System.Drawing.Point(3, 68);
+            lblGamePort2.Location = new System.Drawing.Point(3, 61);
             lblGamePort2.Name = "lblGamePort2";
-            lblGamePort2.Size = new System.Drawing.Size(59, 13);
+            lblGamePort2.Size = new System.Drawing.Size(65, 12);
             lblGamePort2.TabIndex = 7;
             lblGamePort2.Text = "Game port:";
             // 
             // lblServerAddress2
             // 
             lblServerAddress2.AutoSize = true;
-            lblServerAddress2.Location = new System.Drawing.Point(3, 8);
+            lblServerAddress2.Location = new System.Drawing.Point(3, 7);
             lblServerAddress2.Name = "lblServerAddress2";
-            lblServerAddress2.Size = new System.Drawing.Size(81, 13);
+            lblServerAddress2.Size = new System.Drawing.Size(95, 12);
             lblServerAddress2.TabIndex = 2;
             lblServerAddress2.Text = "Server address:";
             // 
             // lblPlayers2
             // 
             lblPlayers2.AutoSize = true;
-            lblPlayers2.Location = new System.Drawing.Point(3, 88);
+            lblPlayers2.Location = new System.Drawing.Point(3, 79);
             lblPlayers2.Name = "lblPlayers2";
-            lblPlayers2.Size = new System.Drawing.Size(44, 13);
+            lblPlayers2.Size = new System.Drawing.Size(53, 12);
             lblPlayers2.TabIndex = 9;
             lblPlayers2.Text = "Players:";
             // 
             // lblClients2
             // 
             lblClients2.AutoSize = true;
-            lblClients2.Location = new System.Drawing.Point(3, 108);
+            lblClients2.Location = new System.Drawing.Point(3, 97);
             lblClients2.Name = "lblClients2";
-            lblClients2.Size = new System.Drawing.Size(41, 13);
+            lblClients2.Size = new System.Drawing.Size(53, 12);
             lblClients2.TabIndex = 11;
             lblClients2.Text = "Clients:";
-            // 
-            // mnuMain
-            // 
-            this.mnuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFile,
-            mnuTools,
-            this.mnuHelp});
-            this.mnuMain.Location = new System.Drawing.Point(0, 0);
-            this.mnuMain.Name = "mnuMain";
-            this.mnuMain.Size = new System.Drawing.Size(343, 24);
-            this.mnuMain.TabIndex = 0;
-            // 
-            // mnuFile
-            // 
-            this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFileChangeServer,
-            this.mnuFileExit});
-            this.mnuFile.Name = "mnuFile";
-            this.mnuFile.Size = new System.Drawing.Size(35, 20);
-            this.mnuFile.Text = "&File";
-            // 
-            // mnuFileChangeServer
-            // 
-            this.mnuFileChangeServer.Name = "mnuFileChangeServer";
-            this.mnuFileChangeServer.Size = new System.Drawing.Size(156, 22);
-            this.mnuFileChangeServer.Text = "Change server";
-            this.mnuFileChangeServer.Click += new System.EventHandler(this.mnuChangeServer_Click);
-            // 
-            // mnuFileExit
-            // 
-            this.mnuFileExit.Name = "mnuFileExit";
-            this.mnuFileExit.Size = new System.Drawing.Size(156, 22);
-            this.mnuFileExit.Text = "E&xit";
-            this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
             // 
             // mnuTools
             // 
             mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuToolsLaunchWarcraft});
+            this.mnuToolsLaunchWarcraft,
+            this.clearRecordsToolStripMenuItem});
             mnuTools.Name = "mnuTools";
-            mnuTools.Size = new System.Drawing.Size(44, 20);
+            mnuTools.Size = new System.Drawing.Size(52, 21);
             mnuTools.Text = "Tools";
             // 
             // mnuToolsLaunchWarcraft
             // 
             this.mnuToolsLaunchWarcraft.Name = "mnuToolsLaunchWarcraft";
-            this.mnuToolsLaunchWarcraft.Size = new System.Drawing.Size(180, 22);
+            this.mnuToolsLaunchWarcraft.Size = new System.Drawing.Size(186, 22);
             this.mnuToolsLaunchWarcraft.Text = "Launch Warcraft III";
             this.mnuToolsLaunchWarcraft.Click += new System.EventHandler(this.mnuLaunchWarcraft_Click);
-            // 
-            // mnuHelp
-            // 
-            this.mnuHelp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuHelpAbout});
-            this.mnuHelp.Name = "mnuHelp";
-            this.mnuHelp.Size = new System.Drawing.Size(40, 20);
-            this.mnuHelp.Text = "&Help";
-            // 
-            // mnuHelpAbout
-            // 
-            this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(152, 22);
-            this.mnuHelpAbout.Text = "&About";
-            this.mnuHelpAbout.Click += new System.EventHandler(this.mnuHelpAbout_Click);
-            // 
-            // lblGameName
-            // 
-            this.lblGameName.AutoEllipsis = true;
-            this.lblGameName.AutoSize = true;
-            this.lblGameName.Location = new System.Drawing.Point(123, 28);
-            this.lblGameName.Name = "lblGameName";
-            this.lblGameName.Size = new System.Drawing.Size(69, 13);
-            this.lblGameName.TabIndex = 4;
-            this.lblGameName.Text = "(None found)";
-            // 
-            // lblMap
-            // 
-            this.lblMap.AutoEllipsis = true;
-            this.lblMap.AutoSize = true;
-            this.lblMap.Location = new System.Drawing.Point(123, 48);
-            this.lblMap.Name = "lblMap";
-            this.lblMap.Size = new System.Drawing.Size(33, 13);
-            this.lblMap.TabIndex = 6;
-            this.lblMap.Text = "(N/A)";
-            // 
-            // lblGamePort
-            // 
-            this.lblGamePort.AutoEllipsis = true;
-            this.lblGamePort.AutoSize = true;
-            this.lblGamePort.Location = new System.Drawing.Point(123, 68);
-            this.lblGamePort.Name = "lblGamePort";
-            this.lblGamePort.Size = new System.Drawing.Size(33, 13);
-            this.lblGamePort.TabIndex = 8;
-            this.lblGamePort.Text = "(N/A)";
             // 
             // tableLayoutPanel1
             // 
@@ -234,36 +156,66 @@ namespace Foole.WC3Proxy
             tableLayoutPanel1.Controls.Add(this.lblPlayers, 1, 5);
             tableLayoutPanel1.Controls.Add(this.lblClientCount, 1, 6);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            tableLayoutPanel1.Location = new System.Drawing.Point(0, 24);
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 7;
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(343, 135);
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 7F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            tableLayoutPanel1.Size = new System.Drawing.Size(343, 122);
             tableLayoutPanel1.TabIndex = 9;
+            // 
+            // lblGamePort
+            // 
+            this.lblGamePort.AutoEllipsis = true;
+            this.lblGamePort.AutoSize = true;
+            this.lblGamePort.Location = new System.Drawing.Point(123, 61);
+            this.lblGamePort.Name = "lblGamePort";
+            this.lblGamePort.Size = new System.Drawing.Size(35, 12);
+            this.lblGamePort.TabIndex = 8;
+            this.lblGamePort.Text = "(N/A)";
             // 
             // lblServerAddress
             // 
             this.lblServerAddress.AutoEllipsis = true;
             this.lblServerAddress.AutoSize = true;
-            this.lblServerAddress.Location = new System.Drawing.Point(123, 8);
+            this.lblServerAddress.Location = new System.Drawing.Point(123, 7);
             this.lblServerAddress.Name = "lblServerAddress";
-            this.lblServerAddress.Size = new System.Drawing.Size(47, 13);
+            this.lblServerAddress.Size = new System.Drawing.Size(59, 12);
             this.lblServerAddress.TabIndex = 4;
             this.lblServerAddress.Text = "(Not set)";
+            // 
+            // lblMap
+            // 
+            this.lblMap.AutoEllipsis = true;
+            this.lblMap.AutoSize = true;
+            this.lblMap.Location = new System.Drawing.Point(123, 43);
+            this.lblMap.Name = "lblMap";
+            this.lblMap.Size = new System.Drawing.Size(35, 12);
+            this.lblMap.TabIndex = 6;
+            this.lblMap.Text = "(N/A)";
+            // 
+            // lblGameName
+            // 
+            this.lblGameName.AutoEllipsis = true;
+            this.lblGameName.AutoSize = true;
+            this.lblGameName.Location = new System.Drawing.Point(123, 25);
+            this.lblGameName.Name = "lblGameName";
+            this.lblGameName.Size = new System.Drawing.Size(77, 12);
+            this.lblGameName.TabIndex = 4;
+            this.lblGameName.Text = "(None found)";
             // 
             // lblPlayers
             // 
             this.lblPlayers.AutoEllipsis = true;
             this.lblPlayers.AutoSize = true;
-            this.lblPlayers.Location = new System.Drawing.Point(123, 88);
+            this.lblPlayers.Location = new System.Drawing.Point(123, 79);
             this.lblPlayers.Name = "lblPlayers";
-            this.lblPlayers.Size = new System.Drawing.Size(33, 13);
+            this.lblPlayers.Size = new System.Drawing.Size(35, 12);
             this.lblPlayers.TabIndex = 10;
             this.lblPlayers.Text = "(N/A)";
             // 
@@ -271,11 +223,61 @@ namespace Foole.WC3Proxy
             // 
             this.lblClientCount.AutoEllipsis = true;
             this.lblClientCount.AutoSize = true;
-            this.lblClientCount.Location = new System.Drawing.Point(123, 108);
+            this.lblClientCount.Location = new System.Drawing.Point(123, 97);
             this.lblClientCount.Name = "lblClientCount";
-            this.lblClientCount.Size = new System.Drawing.Size(13, 13);
+            this.lblClientCount.Size = new System.Drawing.Size(11, 12);
             this.lblClientCount.TabIndex = 12;
             this.lblClientCount.Text = "0";
+            // 
+            // mnuMain
+            // 
+            this.mnuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFile,
+            mnuTools,
+            this.mnuHelp});
+            this.mnuMain.Location = new System.Drawing.Point(0, 0);
+            this.mnuMain.Name = "mnuMain";
+            this.mnuMain.Size = new System.Drawing.Size(343, 25);
+            this.mnuMain.TabIndex = 0;
+            // 
+            // mnuFile
+            // 
+            this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFileChangeServer,
+            this.mnuFileExit});
+            this.mnuFile.Name = "mnuFile";
+            this.mnuFile.Size = new System.Drawing.Size(39, 21);
+            this.mnuFile.Text = "&File";
+            // 
+            // mnuFileChangeServer
+            // 
+            this.mnuFileChangeServer.Name = "mnuFileChangeServer";
+            this.mnuFileChangeServer.Size = new System.Drawing.Size(160, 22);
+            this.mnuFileChangeServer.Text = "Change server";
+            this.mnuFileChangeServer.Click += new System.EventHandler(this.mnuChangeServer_Click);
+            // 
+            // mnuFileExit
+            // 
+            this.mnuFileExit.Name = "mnuFileExit";
+            this.mnuFileExit.Size = new System.Drawing.Size(160, 22);
+            this.mnuFileExit.Text = "E&xit";
+            this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
+            // 
+            // mnuHelp
+            // 
+            this.mnuHelp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuHelpAbout});
+            this.mnuHelp.Name = "mnuHelp";
+            this.mnuHelp.Size = new System.Drawing.Size(47, 21);
+            this.mnuHelp.Text = "&Help";
+            // 
+            // mnuHelpAbout
+            // 
+            this.mnuHelpAbout.Name = "mnuHelpAbout";
+            this.mnuHelpAbout.Size = new System.Drawing.Size(111, 22);
+            this.mnuHelpAbout.Text = "&About";
+            this.mnuHelpAbout.Click += new System.EventHandler(this.mnuHelpAbout_Click);
             // 
             // mIcon
             // 
@@ -291,20 +293,27 @@ namespace Foole.WC3Proxy
             this.mnuIconExit});
             this.mIconMenu.Name = "mIconMenu";
             this.mIconMenu.ShowImageMargin = false;
-            this.mIconMenu.Size = new System.Drawing.Size(79, 26);
+            this.mIconMenu.Size = new System.Drawing.Size(72, 26);
             // 
             // mnuIconExit
             // 
             this.mnuIconExit.Name = "mnuIconExit";
-            this.mnuIconExit.Size = new System.Drawing.Size(78, 22);
+            this.mnuIconExit.Size = new System.Drawing.Size(71, 22);
             this.mnuIconExit.Text = "Exit";
             this.mnuIconExit.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // clearRecordsToolStripMenuItem
+            // 
+            this.clearRecordsToolStripMenuItem.Name = "clearRecordsToolStripMenuItem";
+            this.clearRecordsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.clearRecordsToolStripMenuItem.Text = "Clear Records";
+            this.clearRecordsToolStripMenuItem.Click += new System.EventHandler(this.clearRecordsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(343, 159);
+            this.ClientSize = new System.Drawing.Size(343, 147);
             this.Controls.Add(tableLayoutPanel1);
             this.Controls.Add(this.mnuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -312,13 +321,13 @@ namespace Foole.WC3Proxy
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Foole\'s WC3 Proxy";
-            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
-            this.mnuMain.ResumeLayout(false);
-            this.mnuMain.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            this.mnuMain.ResumeLayout(false);
+            this.mnuMain.PerformLayout();
             this.mIconMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -343,5 +352,6 @@ namespace Foole.WC3Proxy
         private System.Windows.Forms.ToolStripMenuItem mnuFileChangeServer;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
         private System.Windows.Forms.ToolStripMenuItem mnuHelpAbout;
+        private System.Windows.Forms.ToolStripMenuItem clearRecordsToolStripMenuItem;
     }
 }

@@ -372,5 +372,15 @@ namespace Foole.WC3Proxy
         {
             new AboutBox().ShowDialog();
         }
+
+        private void clearRecordsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            Registry.CurrentUser.DeleteSubKey(@"Software\Foole\WC3 Proxy");
+            Registry.CurrentUser.DeleteSubKey(@"Software\Foole");
+            MessageBox.Show("Registry records cleared.", mCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
     }
 }
