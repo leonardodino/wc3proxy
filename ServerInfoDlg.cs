@@ -106,11 +106,33 @@ namespace Foole.WC3Proxy
                 txtServerAddress.Focus();
                 return;
             }
+
+            IPAddress ipAddress;
+            if (IPAddress.TryParse(txtServerAddress.Text, out ipAddress))
+            {
+
+                mHost = new IPHostEntry();
+                mHost.AddressList = new IPAddress[] { ipAddress };
+                mHost.HostName = txtServerAddress.Text;
+
+                DialogResult = DialogResult.OK;
+                Hide();
+
+                return;
+
+            }
+
             try
             {
                 this.UseWaitCursor = true;
                 mHost = Dns.GetHostEntry(txtServerAddress.Text);
                 this.UseWaitCursor = false;
+
+                DialogResult = DialogResult.OK;
+                Hide();
+
+                return;
+
             } catch (Exception ex)
             {
                 this.UseWaitCursor = false;
@@ -120,8 +142,6 @@ namespace Foole.WC3Proxy
                 return;
             }
 
-            DialogResult = DialogResult.OK;
-            Hide();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
