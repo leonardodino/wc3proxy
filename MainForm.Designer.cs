@@ -54,7 +54,6 @@ namespace Foole.WC3Proxy
             this.mIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.mIconMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuIconExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.clearRecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lblGameName2 = new System.Windows.Forms.Label();
             lblMap2 = new System.Windows.Forms.Label();
             lblGamePort2 = new System.Windows.Forms.Label();
@@ -125,8 +124,7 @@ namespace Foole.WC3Proxy
             // mnuTools
             // 
             mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuToolsLaunchWarcraft,
-            this.clearRecordsToolStripMenuItem});
+            this.mnuToolsLaunchWarcraft});
             mnuTools.Name = "mnuTools";
             mnuTools.Size = new System.Drawing.Size(52, 21);
             mnuTools.Text = "Tools";
@@ -302,13 +300,6 @@ namespace Foole.WC3Proxy
             this.mnuIconExit.Text = "Exit";
             this.mnuIconExit.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // clearRecordsToolStripMenuItem
-            // 
-            this.clearRecordsToolStripMenuItem.Name = "clearRecordsToolStripMenuItem";
-            this.clearRecordsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.clearRecordsToolStripMenuItem.Text = "Clear Records";
-            this.clearRecordsToolStripMenuItem.Click += new System.EventHandler(this.clearRecordsToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -352,6 +343,5 @@ namespace Foole.WC3Proxy
         private System.Windows.Forms.ToolStripMenuItem mnuFileChangeServer;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
         private System.Windows.Forms.ToolStripMenuItem mnuHelpAbout;
-        private System.Windows.Forms.ToolStripMenuItem clearRecordsToolStripMenuItem;
     }
 }

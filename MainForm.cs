@@ -52,8 +52,6 @@ namespace Foole.WC3Proxy
         private readonly string mCaption = "WC3 Proxy";
         private readonly int mBalloonTipTimeout = 1000;
 
-        private static readonly string mRegPath = @"HKEY_CURRENT_USER\Software\Foole\WC3 Proxy";
-
         private delegate void SimpleDelegate();
 
         // TODO: Configurable command line arguments for war3?
@@ -73,20 +71,7 @@ namespace Foole.WC3Proxy
             byte version = 0;
             bool expansion = false;
 
-            string servername = (string)Registry.GetValue(mRegPath, "ServerName", null);
-            if (servername != null)
-            {
-                expansion = ((int)Registry.GetValue(mRegPath, "Expansion", 0)) != 0;
-                try
-                {
-                    serverhost = Dns.GetHostEntry(servername);
-                } catch { }
-
-                version = (byte)(int)Registry.GetValue(mRegPath, "WC3Version", 0);
-            }
-
-            if (serverhost == null || version == 0)
-                if (ShowInfoDialog(ref serverhost, ref version, ref expansion) == false) return;
+            if (ShowInfoDialog(ref serverhost, ref version, ref expansion) == false) return;
 
             MainForm mainform = new MainForm(serverhost, version, expansion);
 
@@ -110,10 +95,6 @@ namespace Foole.WC3Proxy
             Expansion = dlg.Expansion;
             dlg.Dispose();
 
-            // TODO: Should this store the ip address or the hostname?
-            Registry.SetValue(mRegPath, "ServerName", Host.HostName, RegistryValueKind.String);
-            Registry.SetValue(mRegPath, "Expansion", Expansion ? 1 : 0, RegistryValueKind.DWord);
-            Registry.SetValue(mRegPath, "WC3Version", Version, RegistryValueKind.DWord);
             return true;
         }
 
@@ -383,15 +364,6 @@ namespace Foole.WC3Proxy
         private void mnuHelpAbout_Click(object sender, EventArgs e)
         {
             new AboutBox().ShowDialog();
-        }
-
-        private void clearRecordsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            Registry.CurrentUser.DeleteSubKey(@"Software\Foole\WC3 Proxy");
-            Registry.CurrentUser.DeleteSubKey(@"Software\Foole");
-            MessageBox.Show("Registry records cleared.", mCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
         }
 
     }
