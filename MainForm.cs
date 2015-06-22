@@ -327,8 +327,8 @@ namespace Foole.WC3Proxy
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopTcpProxy();
-            if (mBrowser != null) mBrowser.Stop();
             if (mFoundGame) mBrowser.SendGameCancelled(mGameInfo.GameId);
+            if (mBrowser != null) mBrowser.Stop();
         }
 
         private void mIcon_MouseDoubleClick(object sender, MouseEventArgs e)
