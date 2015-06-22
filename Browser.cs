@@ -172,7 +172,8 @@ namespace Foole.WC3Proxy
             game.GameId = BitConverter.ToInt32(response, 0xc);
             game.Name = StringFromArray(response, 0x14);
 
-            int cryptstart = 0x14 + game.Name.Length + 1 + 1; // one extra byte after the server name
+            //int cryptstart = 0x14 + game.Name.Length + 1 + 1; // one extra byte after the server name
+            int cryptstart = 0x14 + Encoding.UTF8.GetByteCount(game.Name) + 1 + 1; // one extra byte after the server name
             byte[] decrypted = Decrypt(response, cryptstart);
             game.Map = StringFromArray(decrypted, 0xd);
 
@@ -230,6 +231,8 @@ namespace Foole.WC3Proxy
 
         private string StringFromArray(byte[] Data, int Offset)
         {
+
+            /*
             StringBuilder sb = new StringBuilder();
             while (true)
             {
@@ -238,6 +241,13 @@ namespace Foole.WC3Proxy
                 sb.Append(c);
             }
             return sb.ToString();
+            */
+
+            int length = 0;
+            while (Data[Offset + (++length)] != 0x0);
+
+            return Encoding.UTF8.GetString(Data, Offset, length);
+
         }
 
         // Replace "Local Game" with "Proxy Game"
