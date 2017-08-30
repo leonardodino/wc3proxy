@@ -25,6 +25,7 @@ using System.Diagnostics; // for Process
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
+using System.Threading;
 
 using Microsoft.Win32; // for Registry
 
@@ -33,7 +34,7 @@ using System.IO;
 
 namespace Foole.WC3Proxy
 {
-    public partial class MainForm : Form
+    public class MainProxy
     {
         private Listener mListener; // This waits for proxy connections
         private List<TcpProxy> mProxies; // A collection of game proxies.  Usually we would only need 1 proxy.
@@ -50,58 +51,22 @@ namespace Foole.WC3Proxy
         private GameInfo mGameInfo;
 
         private readonly string mCaption = "WC3 Proxy";
-        private readonly int mBalloonTipTimeout = 1000;
-
-        private delegate void SimpleDelegate();
-
-        // TODO: Configurable command line arguments for war3?
-        // window       Windowed mode
-        // fullscreen   (Default)
-        // gametype     ?
-        // loadfile     Loads a map or replay
-        // datadir      ?
-        // classic      This will load in RoC mode even if you have TFT installed.
-        // swtnl        Software Transform & Lighting
-        // opengl
-        // d3d          (Default)
 
         static void Main(string[] args)
         {
-            IPHostEntry serverhost = null;
-            byte version = 0;
-            bool expansion = false;
+            IPHostEntry serverhost = Dns.GetHostEntry(args[0]);
 
-            if (ShowInfoDialog(ref serverhost, ref version, ref expansion) == false) return;
-
-            MainForm mainform = new MainForm(serverhost, version, expansion);
-
-            Application.Run(mainform);
-        }
-
-        private static bool ShowInfoDialog(ref IPHostEntry Host, ref byte Version, ref bool Expansion)
-        {
-            ServerInfoDlg dlg = new ServerInfoDlg();
-            if (Host != null)
-            {
-                dlg.Host = Host;
-                dlg.Expansion = Expansion;
-                dlg.Version = Version;
+            Console.WriteLine("Starting proxy on " + args[0]);
+            MainProxy mainform = new MainProxy(serverhost, 0x1b, true);
+            mainform.StartTcpProxy();
+            mainform.StartBrowser();
+            while (true) {
+                Thread.Sleep(5000);
             }
-            if (dlg.ShowDialog() == DialogResult.Cancel)
-                return false;
-
-            Host = dlg.Host;
-            Version = dlg.Version;
-            Expansion = dlg.Expansion;
-            dlg.Dispose();
-
-            return true;
         }
 
-        public MainForm(IPHostEntry ServerHost, byte Version, bool Expansion)
+        public MainProxy(IPHostEntry ServerHost, byte Version, bool Expansion)
         {
-            InitializeComponent();
-
             this.ServerHost = ServerHost;
             this.Version = Version;
             this.Expansion = Expansion;
@@ -112,6 +77,7 @@ namespace Foole.WC3Proxy
             get { return mServerHost; }
             set 
             {
+                Console.WriteLine("Setting IP");
                 OnLostGame();
 
                 mServerHost = value;
@@ -122,8 +88,6 @@ namespace Foole.WC3Proxy
                     addrdesc = mServerHost.HostName;
                 else
                     addrdesc = String.Format("{0} ({1})", mServerHost.HostName, mServerHost.AddressList[0].ToString());
-
-                lblServerAddress.Text = addrdesc;
 
                 if (mBrowser != null) mBrowser.ServerAddress = mServerHost.AddressList[0];
             }
@@ -151,84 +115,18 @@ namespace Foole.WC3Proxy
 
         private void ResetGameInfo()
         {
-            mIcon.ShowBalloonTip(mBalloonTipTimeout, mCaption, "Lost game", ToolTipIcon.Info);
-
-            lblGameName.Text = "(None found)";
-            lblMap.Text = "(N/A)";
-            lblGamePort.Text = "(N/A)";
-            lblPlayers.Text = "(N/A)";
-
-            mServerEP.Port = 0;
-
+            Console.WriteLine(mCaption + " - Lost game");
+            if (mServerEP != null) mServerEP.Port = 0;
             mFoundGame = false;
         }
 
         private void DisplayGameInfo()
         {
-            if (InvokeRequired)
-            {
-                Invoke(new SimpleDelegate(DisplayGameInfo));
-                return;
+            if (mFoundGame == false) {
+                Console.WriteLine(mCaption + " - Found game: " + mGameInfo.Name);
             }
-
-            if (mFoundGame == false) mIcon.ShowBalloonTip(mBalloonTipTimeout, mCaption, "Found game: " + mGameInfo.Name, ToolTipIcon.Info);
-
-            lblGameName.Text = mGameInfo.Name;
-            lblMap.Text = mGameInfo.Map;
-            lblGamePort.Text = mGameInfo.Port.ToString();
-            lblPlayers.Text = String.Format("{0} / {1} / {2}", mGameInfo.CurrentPlayers, mGameInfo.PlayerSlots, mGameInfo.SlotCount);
 
             mServerEP.Port = mGameInfo.Port;
-        }
-
-        private void ExecuteWC3(bool Expansion)
-        {
-            string programkey = Expansion ? "ProgramX" : "Program";
-            string program = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Blizzard Entertainment\Warcraft III", programkey, null);
-
-            if (program == null)
-            {
-
-                string currentDir = Directory.GetCurrentDirectory();
-
-                program = Path.Combine(currentDir, "war3.exe");
-
-                if (!File.Exists(program))
-                {
-
-                    MessageBox.Show("Unable to locate Warcraft 3 executable");
-                    return;
-
-                }
-
-            }
-
-            try
-            {
-                Process.Start(program);
-            } catch (Exception e)
-            {
-                string message = string.Format("Unable to launch WC3: {0}\n{1}", e.Message, program);
-                MessageBox.Show(message, mCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            // TODO: If the file doesnt exist, just launch war3.exe?
-        }
-
-        private void mnuFileExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void mnuLaunchWarcraft_Click(object sender, EventArgs e)
-        {
-            ExecuteWC3(Expansion);
-        }
-
-        private void MainForm_Shown(object sender, EventArgs e)
-        {
-            StartTcpProxy();
-            StartBrowser();
         }
 
         private void StartBrowser()
@@ -250,8 +148,6 @@ namespace Foole.WC3Proxy
 
         void mBrowser_QuerySent()
         {
-            // TODO: show an activity indicator?
-
             // We don't receive the "server cancelled" messages
             // because they are only ever broadcast to the host's LAN.
             if (mFoundGame == true)
@@ -265,7 +161,7 @@ namespace Foole.WC3Proxy
         private void OnLostGame()
         {
             if (mBrowser != null) mBrowser.SendGameCancelled(mGameInfo.GameId);
-            if (mFoundGame) Invoke(new SimpleDelegate(ResetGameInfo));
+            if (mFoundGame) ResetGameInfo();
         }
 
         private void StartTcpProxy()
@@ -279,42 +175,27 @@ namespace Foole.WC3Proxy
             }
             catch (SocketException ex)
             {
-                MessageBox.Show("Unable to start listener\n" + ex.Message);
+                Console.WriteLine("Unable to start listener\n" + ex.Message);
             }
         }
 
         private void GotConnection(Socket ClientSocket)
         {
             string message = String.Format("Got a connection from {0}", ClientSocket.RemoteEndPoint.ToString());
-            mIcon.ShowBalloonTip(mBalloonTipTimeout, mCaption, message, ToolTipIcon.Info);
+            Console.WriteLine(mCaption + " " + message);
 
             TcpProxy proxy = new TcpProxy(ClientSocket, mServerEP);
             proxy.ProxyDisconnected += new ProxyDisconnectedHandler(ProxyDisconnected);
             lock (mProxies) mProxies.Add(proxy);
 
             proxy.Run();
-
-            UpdateClientCount();
-        }
-
-        private void UpdateClientCount()
-        {
-            if (InvokeRequired) 
-            {
-                Invoke(new SimpleDelegate(UpdateClientCount));
-                return;
-            }
-            lblClientCount.Text = mProxies.Count.ToString();
         }
 
         private void ProxyDisconnected(TcpProxy p)
         {
-            mIcon.ShowBalloonTip(mBalloonTipTimeout, mCaption, "Client disconnected", ToolTipIcon.Info);
-
+            Console.WriteLine(mCaption + " Client disconnected");
             lock (mProxies)
                 if (mProxies.Contains(p)) mProxies.Remove(p);
-
-            UpdateClientCount();
         }
 
         private void StopTcpProxy()
@@ -330,41 +211,5 @@ namespace Foole.WC3Proxy
             if (mFoundGame) mBrowser.SendGameCancelled(mGameInfo.GameId);
             if (mBrowser != null) mBrowser.Stop();
         }
-
-        private void mIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            WindowState = FormWindowState.Normal;
-            Focus();
-        }
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            ShowInTaskbar = (WindowState != FormWindowState.Minimized);
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void mnuChangeServer_Click(object sender, EventArgs e)
-        {
-            IPHostEntry host = ServerHost;
-            bool expansion = Expansion;
-            byte version = Version;
-
-            if (ShowInfoDialog(ref host, ref version, ref expansion))
-            {
-                ServerHost = host;
-                Version = version;
-                Expansion = expansion;
-            }
-        }
-
-        private void mnuHelpAbout_Click(object sender, EventArgs e)
-        {
-            new AboutBox().ShowDialog();
-        }
-
     }
 }

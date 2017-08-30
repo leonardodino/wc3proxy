@@ -62,6 +62,7 @@ namespace Foole.Net
 
 		public void Run()
 		{
+            Console.WriteLine("Listener - Run");
 			mStop = false;
 
 			IPEndPoint EndPoint = new IPEndPoint(mAddress, mPort);
@@ -78,11 +79,14 @@ namespace Foole.Net
 		private void BeginAccept()
 		{
 			if (mStop) return;
+            Console.WriteLine("Listener - Accept");
 			ListenSocket.BeginAccept(cbAccept, null);
+            Console.WriteLine("Listener - Accept Done");
 		} 
 
 		private void EndAccept(IAsyncResult ar)
 		{
+            Console.WriteLine("Listener - EndAccept");
             if (mStop) return;
 
 			try

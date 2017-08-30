@@ -23,6 +23,7 @@ using System.Collections;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System;
 
 namespace Foole.WC3Proxy
 {
@@ -49,6 +50,7 @@ namespace Foole.WC3Proxy
 
         public void Run()
         {
+            Console.WriteLine("TcpProxy - Run");
             mServerSocket.Connect(mServerEP);
 
             mRunning = true;
