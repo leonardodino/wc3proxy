@@ -50,7 +50,6 @@ namespace Foole.WC3Proxy
 
         public void Run()
         {
-            Console.WriteLine("TcpProxy - Run");
             mServerSocket.Connect(mServerEP);
 
             mRunning = true;

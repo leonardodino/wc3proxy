@@ -21,13 +21,9 @@ THE SOFTWARE.
  */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics; // for Process
 using System.Net;
 using System.Net.Sockets;
-using System.Windows.Forms;
 using System.Threading;
-
-using Microsoft.Win32; // for Registry
 
 using Foole.Net; // For Listener
 using System.IO;
@@ -54,10 +50,35 @@ namespace Foole.WC3Proxy
 
         static void Main(string[] args)
         {
-            IPHostEntry serverhost = Dns.GetHostEntry(args[0]);
+            if (args.Length != 1) {
+                Console.WriteLine("Usage: wc3proxy ipaddress");
+                return;
+            }
 
-            Console.WriteLine("Starting proxy on " + args[0]);
-            MainProxy mainform = new MainProxy(serverhost, 0x1b, true);
+            IPHostEntry serverhost;
+            
+            serverhost = new IPHostEntry();
+            serverhost.HostName = args[0];
+            serverhost.AddressList = new IPAddress[] {IPAddress.Parse(args[0])};
+
+            // List of different values for different versions.
+            // 0x15 = , "1.21"
+            // 0x16 = , "1.22"
+            // 0x17 = , "1.23"
+            // 0x18 = , "1.24"
+            // 0x19 = , "1.25"
+            // 0x1a = , "1.26"
+            // 0x1b = , "1.27"
+            // 0x1c = , "1.28"
+            // 0x1d = , "1.29"
+            // 0x1e = , "1.30"
+            // 0x1f = , "1.31"
+            byte version = 0x1f;
+            bool expansion = true; // For Reign of Chaos, put false. For Frozen Throne, put true.
+
+            MainProxy mainform = new MainProxy(serverhost, version, expansion);
+            mainform.CleanupReplays();
+
             mainform.StartTcpProxy();
             mainform.StartBrowser();
             while (true) {
@@ -89,6 +110,7 @@ namespace Foole.WC3Proxy
                 else
                     addrdesc = String.Format("{0} ({1})", mServerHost.HostName, mServerHost.AddressList[0].ToString());
 
+                Console.WriteLine(String.Format("Starting proxy on {0}", addrdesc));
                 if (mBrowser != null) mBrowser.ServerAddress = mServerHost.AddressList[0];
             }
         }
@@ -113,6 +135,39 @@ namespace Foole.WC3Proxy
             }
         }
 
+        private void CleanupReplays()
+        {
+            TimeSpan maxAge = new TimeSpan(60, 0, 0, 0);
+            String replay_directory = Environment.GetEnvironmentVariable("HOME") + @"/Library/Application Support/Blizzard/Warcraft III/Replay";
+            if (Directory.Exists(replay_directory)) {
+                foreach (var file in Directory.EnumerateFiles(replay_directory, "*.w3g", SearchOption.AllDirectories))
+                {
+                    FileInfo fi = new FileInfo(file);
+                    DateTime time = fi.CreationTime;
+                    if (DateTime.Now.Subtract(time) > maxAge)
+                    {
+                        Console.WriteLine("Deleting: " + file);
+                        File.Delete(file);
+                    }
+                }
+            }
+        }
+
+        private void CopyReplay()
+        {
+            string lastReplay = "/Users/msanfacon/Library/Application Support/Blizzard/Warcraft III/Replay/LastReplay.w3g";
+            if (File.Exists(lastReplay)) {
+                FileInfo fi = new FileInfo(lastReplay);
+                DateTime time = fi.CreationTime;
+
+                string newFile = "/Users/msanfacon/Library/Application Support/Blizzard/Warcraft III/Replay/Autosaved/" + time.ToString("yyyyMMdd_HH_mm") + ".w3g";
+                if (!File.Exists(newFile)) {
+                    Console.WriteLine("Copied LastReplay.w3g into " + newFile + "\n");
+                    File.Copy(lastReplay, newFile);
+                }
+            }
+        }
+
         private void ResetGameInfo()
         {
             Console.WriteLine(mCaption + " - Lost game");
@@ -124,6 +179,7 @@ namespace Foole.WC3Proxy
         {
             if (mFoundGame == false) {
                 Console.WriteLine(mCaption + " - Found game: " + mGameInfo.Name);
+                CopyReplay();
             }
 
             mServerEP.Port = mGameInfo.Port;
@@ -203,13 +259,6 @@ namespace Foole.WC3Proxy
             mListener.Stop();
             foreach (TcpProxy p in mProxies)
                 p.Stop();
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            StopTcpProxy();
-            if (mFoundGame) mBrowser.SendGameCancelled(mGameInfo.GameId);
-            if (mBrowser != null) mBrowser.Stop();
         }
     }
 }
