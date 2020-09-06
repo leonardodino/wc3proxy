@@ -1,12 +1,40 @@
-# WC3 Proxy
+# <img align="left" alt="wc3proxy" src="./media/wc3proxy-gui.png" height="100" width="100"> WC3 Proxy
+portable, cross-platform, [GUI](https://en.wikipedia.org/wiki/Graphical_user_interface) for the [`wc3proxy`](https://code.google.com/archive/p/wc3proxy/) utility.
 
-This is a repository exported from [wc3proxy](https://github.com/evshiron/wc3proxy).
+<br clear="both">
 
-I modified the project to have it as a dotnet core console application to be able to run it on Mac/MacOS/OS X. It should also run on Linux and Windows.
+play **Warcraft III** with your remote friends just like if you were all in the same **LAN**!
 
-To compile, make sure [dotnet core is installed](https://www.microsoft.com/net/core) and simply run *dotnet build* from the main directory.
+<br>
 
-To execute the proxy, simply run *dotnet run [hostname|ipaddress]*, where hostname|ipaddress is the machine hosting the Warcraft III - The Frozen Throne game. I suggest you also add --no-build to speed up starting the process. So that makes: *dotnet run --no-build nameoripofmachinehostingthegame*
+<img align="right" alt="mac" src="./media/windows%402x.png?x=4" height="100"/>
+<h2><a href="/#">download for windows</a></h2>
+<br clear="both">
 
-*Note:*
-I hardcoded the version 1.28 and The Frozen Throne, so by default, it does not work for Warcraft RoC or other version. This can be easily changed in MainProxy.cs.
+<img align="right" alt="windows" src="./media/mac%402x.png?x=4" height="100"/>
+<h2><a href="/#">download for mac</a></h2>
+<br clear="both">
+
+<img align="right" alt="linux" src="./media/linux%402x.png?x=4" height="100"/>
+<h2><a href="/#">download for linux</a></h2>
+<br clear="both">
+
+## how to use
+this is how **I had great success playing (pre-reforged versions)** across the atlantic:
+1) have everyone in the same [`ZeroTier`](https://www.zerotier.com/) network.
+2) choose one person to host and note their ZeroTier IP address.
+3) all other players need to run [`WC3 Proxy`](https://github.com/leonardodino/wc3proxy) configured to the host IP.
+
+**troubleshooting**:
+- the host should not run this utility (not sure if it impacts anything, but there's no need to)
+- everyone should be on the same protocol version, and configure it on the proxy
+- please use a stable connection, as there's no relay server between the nodes
+
+
+## credits
+- [original `wc3proxy`](https://github.com/FooleAU/wc3proxy) by @FooleAU
+- [network code cleanup](https://github.com/evshiron/wc3proxy) by @evshiron
+- [`dotnet core` port](https://github.com/marcsanfacon/wc3proxy) by @marcsanfacon
+- [moonwell icon](https://www.artstation.com/artwork/YwED6) by [taylormouse](https://taylormouse.artstation.com/)
+- [Warcraft III](https://en.wikipedia.org/wiki/Warcraft_III:_The_Frozen_Throne) by [blizzard](https://blizzard.com/)
+- boredom caused by the `2020 Plague Season™`

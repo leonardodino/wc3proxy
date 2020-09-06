@@ -1,0 +1,7 @@
+#!/bin/sh
+
+DIR="$(cd "$(dirname "$0")" ; pwd -P)"
+TCLKIT="$DIR/tclkit"
+APP_MAIN="$DIR/main.tcl"
+
+exec "$TCLKIT" "$APP_MAIN" $@

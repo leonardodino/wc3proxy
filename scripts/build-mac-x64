@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+set -exuo pipefail
+
+# cleanup
+rm -rf dist tmp ./cli/obj ./cli/bin
+mkdir -p 'tmp' 'dist'
+
+# build wc3proxy cli
+dotnet publish cli --self-contained  --nologo -o dist
+chmod +x dist/wc3proxy
+
+# create mac app
+MAC_APP_NAME="WC3 Proxy"
+MAC_APP_BUNDLE="dist/${MAC_APP_NAME}.app"
+mkdir -p "${MAC_APP_BUNDLE}/Contents/Resources" "${MAC_APP_BUNDLE}/Contents/SharedSupport/bin"
+
+# download tcl 8.6
+TCL_PKG='ActiveTcl-8.6.9.8609.2-macosx10.9-x86_64.pkg'
+TCL_SHA='bd462de2a09198b95c94ac727264f36aebee83f0ac9aab7260150c4f5e0f5c3b'
+curl -sko "tmp/${TCL_PKG}" "https://downloads.activestate.com/ActiveTcl/releases/8.6.9.0/${TCL_PKG}"
+shasum -c <<< "$TCL_SHA *tmp/${TCL_PKG}"
+
+# download create-dmg
+curl -Lso 'tmp/create-dmg.tar.gz' 'https://github.com/create-dmg/create-dmg/archive/v1.0.8.tar.gz'
+shasum -c <<< "6eb256e6835e650e4a529c9ea0630c409e6d1d5413fc9076b94d231674fa4cae *tmp/create-dmg.tar.gz"
+tar -xf 'tmp/create-dmg.tar.gz' -C tmp --strip-components=1
+chmod +x 'tmp/create-dmg'
+
+# add tcl framework to the app bundle
+pkgutil --expand-full "tmp/${TCL_PKG}" 'tmp/tcl'
+TCL_FRAMEWORKS="$(find tmp/tcl -name '*.pkg')/Payload/Library/Frameworks"
+test -d "$TCL_FRAMEWORKS"
+cp -R "${TCL_FRAMEWORKS}" "${TCL_FRAMEWORKS}/Tk.framework/Versions/Current/Resources/Wish.app/Contents/MacOS" "${MAC_APP_BUNDLE}/Contents"
+
+# fix binary frameworks path linkage 
+WISH_BIN="${MAC_APP_BUNDLE}/Contents/MacOS/Wish"
+WISH_TCL_PATH="Frameworks/Tcl.framework"
+WISH_TK_PATH="Frameworks/Tk.framework"
+WISH_TCL_LINK="$(otool -L "$WISH_BIN" | awk '{print $1}' | grep "$WISH_TCL_PATH")"
+WISH_TK_LINK="$(otool -L "$WISH_BIN" | awk '{print $1}' | grep "$WISH_TK_PATH")"
+install_name_tool -change "$WISH_TCL_LINK" "@executable_path/../${WISH_TCL_PATH}/Tcl" "$WISH_BIN"
+install_name_tool -change "$WISH_TK_LINK" "@executable_path/../${WISH_TK_PATH}/Tk" "$WISH_BIN"
+
+# trim down mac app frameworks
+find "${MAC_APP_BUNDLE}/Contents/Frameworks" -type d -name '*.lproj' -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks" -type d -name 'demos' -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks" -type d -name 'Documentation' -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks" -type d -name 'Headers' -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks" -type d -name 'PrivateHeaders' -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks" -type d -name 'bin' -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks" -type d -name '.app' -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks/Tcl.framework/Versions/8.6/Resources/Scripts" -type d -depth 1 -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks/Tk.framework/Versions/8.6/Resources/Wish.app" -type d -depth 1 -prune -exec rm -rf '{}' '+'
+find "${MAC_APP_BUNDLE}/Contents/Frameworks/Tk.framework/Versions/8.6/Resources" -type f -depth 1 -name 'Tk.*' -prune -exec rm -rf '{}' '+'
+
+# add resources and media
+cp 'media/Info.plist' "${MAC_APP_BUNDLE}/Contents"
+cp 'media/AppIcon.icns' "${MAC_APP_BUNDLE}/Contents/Resources"
+cp 'dist/wc3proxy' "${MAC_APP_BUNDLE}/Contents/SharedSupport/bin"
+cp -R 'gui' "${MAC_APP_BUNDLE}/Contents/Resources/Scripts"
+
+# create dmg for distribution
+DIST_NAMED_FOLDER="dist/${MAC_APP_NAME}"
+mkdir "$DIST_NAMED_FOLDER"
+mv "$MAC_APP_BUNDLE" "$DIST_NAMED_FOLDER"
+tmp/create-dmg \
+  --volname "$MAC_APP_NAME" \
+  --window-pos 640 400 \
+  --window-size 320 180 \
+  --text-size 12 \
+  --icon-size 64 \
+  --icon "${MAC_APP_NAME}.app" 76 88 \
+  --hide-extension "${MAC_APP_NAME}.app" \
+  --app-drop-link 204 88 \
+  "dist/wc3proxy.dmg" "$DIST_NAMED_FOLDER"
+rm -rf "$DIST_NAMED_FOLDER"

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Categories=Utility;
+Type=Application
+Icon=wc3proxy-gui
+Name=WC3 Proxy
+Exec=wc3proxy-gui
+

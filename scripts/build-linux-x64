@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -exuo pipefail
+
+# cleanup
+rm -rf dist tmp ./cli/obj ./cli/bin ./*.AppImage ./*.zsync
+mkdir -p 'tmp' 'dist'
+
+# build wc3proxy cli
+dotnet publish cli -r linux-x64 --self-contained --nologo -o dist
+chmod +x dist/wc3proxy
+
+# download tcl 8.6
+TCL_SHA='a14d98d9542a39c0ced7b89048bb45d081562c552df3f004bac462f20b50ab9f'
+curl -sko "tmp/tclkit" 'http://kitcreator.rkeene.org/kits/aa46bf8e235771b8234f9c510b266cad9e044abf/tclkit'
+shasum -c <<< "$TCL_SHA *tmp/tclkit"
+
+# download linuxdeploy
+curl -Lso 'tmp/linuxdeploy' 'https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage'
+chmod +x 'tmp/linuxdeploy'
+
+
+# copy files
+cp -r gui dist
+cp dist/wc3proxy dist/gui
+mv tmp/tclkit dist/gui/tclkit
+chmod +x dist/gui/tclkit
+
+# AppImage
+export OUTPUT='WC3Proxy.AppImage'
+export UPD_INFO="gh-releases-zsync|leonardodino|wc3proxy|latest|${OUTPUT}.zsync"
+./tmp/linuxdeploy \
+  --appdir="dist/gui" \
+  --icon-file="media/wc3proxy-gui.png" \
+  --desktop-file="media/wc3proxy-gui.desktop" \
+  --custom-apprun="dist/gui/launch" \
+  --output appimage
+mv "$OUTPUT" "${OUTPUT}.zsync" dist
