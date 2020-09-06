@@ -25,7 +25,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-using Foole.Net; // For Listener
+using Foole.Net;
 using System.IO;
 
 namespace Foole.WC3Proxy
@@ -50,9 +50,17 @@ namespace Foole.WC3Proxy
 
         static void Main(string[] args)
         {
-            if (args.Length != 1) {
-                Console.WriteLine("Usage: wc3proxy ipaddress");
+            if (args.Length < 1 || args.Length > 3) {
+                Console.WriteLine("Usage: wc3proxy <ip> [version] [game]");
                 return;
+            }
+            if (args.Length < 2) {
+                Array.Resize(ref args, 2);
+                args[1] = "1.28";
+            }
+            if (args.Length < 3) {
+                Array.Resize(ref args, 3);
+                args[2] = "TFT";
             }
 
             IPHostEntry serverhost;
@@ -60,24 +68,12 @@ namespace Foole.WC3Proxy
             serverhost = new IPHostEntry();
             serverhost.HostName = args[0];
             serverhost.AddressList = new IPAddress[] {IPAddress.Parse(args[0])};
-
-            // List of different values for different versions.
-            // 0x15 = , "1.21"
-            // 0x16 = , "1.22"
-            // 0x17 = , "1.23"
-            // 0x18 = , "1.24"
-            // 0x19 = , "1.25"
-            // 0x1a = , "1.26"
-            // 0x1b = , "1.27"
-            // 0x1c = , "1.28"
-            // 0x1d = , "1.29"
-            // 0x1e = , "1.30"
-            // 0x1f = , "1.31"
-            byte version = 0x1f;
-            bool expansion = true; // For Reign of Chaos, put false. For Frozen Throne, put true.
+            byte version = (byte)Math.Round((float.Parse(args[1]) - 1) * 100);
+            bool expansion = args[2].ToLower() != "roc";
 
             MainProxy mainform = new MainProxy(serverhost, version, expansion);
-            mainform.CleanupReplays();
+            mainform.CompilerWorkaround();
+            mainform.Banner();
 
             mainform.StartTcpProxy();
             mainform.StartBrowser();
@@ -98,19 +94,10 @@ namespace Foole.WC3Proxy
             get { return mServerHost; }
             set 
             {
-                Console.WriteLine("Setting IP");
                 OnLostGame();
 
                 mServerHost = value;
                 mServerEP = new IPEndPoint(mServerHost.AddressList[0], 0);
-
-                string addrdesc;
-                if (mServerHost.AddressList[0].ToString() == mServerHost.HostName)
-                    addrdesc = mServerHost.HostName;
-                else
-                    addrdesc = String.Format("{0} ({1})", mServerHost.HostName, mServerHost.AddressList[0].ToString());
-
-                Console.WriteLine(String.Format("Starting proxy on {0}", addrdesc));
                 if (mBrowser != null) mBrowser.ServerAddress = mServerHost.AddressList[0];
             }
         }
@@ -134,38 +121,27 @@ namespace Foole.WC3Proxy
                 if (mBrowser != null) mBrowser.Version = value;
             }
         }
-
-        private void CleanupReplays()
-        {
-            TimeSpan maxAge = new TimeSpan(60, 0, 0, 0);
-            String replay_directory = Environment.GetEnvironmentVariable("HOME") + @"/Library/Application Support/Blizzard/Warcraft III/Replay";
-            if (Directory.Exists(replay_directory)) {
-                foreach (var file in Directory.EnumerateFiles(replay_directory, "*.w3g", SearchOption.AllDirectories))
-                {
-                    FileInfo fi = new FileInfo(file);
-                    DateTime time = fi.CreationTime;
-                    if (DateTime.Now.Subtract(time) > maxAge)
-                    {
-                        Console.WriteLine("Deleting: " + file);
-                        File.Delete(file);
-                    }
-                }
+        private void CompilerWorkaround(){
+            // I couldn't get this project to compile without this file touching/importing the filesystem :shrug:
+            string varname = "THIS_ENVIRONMENT_VARIABLE_DOES_NOT_EXISTS";
+            string filename = "/THIS_FILE_DOES_NOT_EXISTS";
+            if (Environment.GetEnvironmentVariable(varname) == "dotnet is weird") {
+                Console.WriteLine(File.Exists(filename) ? new FileInfo(filename).Name : "");
             }
         }
-
-        private void CopyReplay()
-        {
-            string lastReplay = "/Users/msanfacon/Library/Application Support/Blizzard/Warcraft III/Replay/LastReplay.w3g";
-            if (File.Exists(lastReplay)) {
-                FileInfo fi = new FileInfo(lastReplay);
-                DateTime time = fi.CreationTime;
-
-                string newFile = "/Users/msanfacon/Library/Application Support/Blizzard/Warcraft III/Replay/Autosaved/" + time.ToString("yyyyMMdd_HH_mm") + ".w3g";
-                if (!File.Exists(newFile)) {
-                    Console.WriteLine("Copied LastReplay.w3g into " + newFile + "\n");
-                    File.Copy(lastReplay, newFile);
-                }
-            }
+        private void Banner() {
+            string ip;
+            if (mServerHost.AddressList[0].ToString() == mServerHost.HostName)
+                ip = mServerHost.HostName;
+            else
+                ip = String.Format("{0} ({1})", mServerHost.HostName, mServerHost.AddressList[0].ToString());
+            
+            string version = "1." + mVersion.ToString();
+            string game = mExpansion ? "The Frozen Throne" : "Reign of Chaos";
+            string banner = String.Format("wc3proxy @ {0} | {1} ({2})", ip, game, version);
+            string ruler = new String('=', banner.Length);
+            Console.WriteLine(banner);
+            Console.WriteLine(ruler+'\n');
         }
 
         private void ResetGameInfo()
@@ -179,7 +155,6 @@ namespace Foole.WC3Proxy
         {
             if (mFoundGame == false) {
                 Console.WriteLine(mCaption + " - Found game: " + mGameInfo.Name);
-                CopyReplay();
             }
 
             mServerEP.Port = mGameInfo.Port;
