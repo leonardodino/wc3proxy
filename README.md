@@ -24,6 +24,7 @@ this is how **I had great success playing (pre-reforged versions)** across the a
 1) have everyone in the same [`ZeroTier`](https://www.zerotier.com/) network.
 2) choose one person to host and note their ZeroTier IP address.
 3) all other players need to run [`WC3 Proxy`](https://github.com/leonardodino/wc3proxy) configured to the host IP.
+4) everyone must use port `6113` on their game settings (`options` -> `gameplay` -> `game port`)
 
 **troubleshooting**:
 - the host should not run this utility (not sure if it impacts anything, but there's no need to)
