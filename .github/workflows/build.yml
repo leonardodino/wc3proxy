@@ -1,0 +1,96 @@
+name: Build
+on: [push]
+
+jobs:
+  build-linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build Linux AppImage
+        shell: bash
+        run: ./scripts/build-linux-x64
+      - name: Upload Linux AppImage
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux
+          path: dist/WC3Proxy.*
+
+  build-mac:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build DMG
+        shell: bash
+        run: ./scripts/build-mac-x64
+      - name: Upload DMG
+        uses: actions/upload-artifact@v2
+        with:
+          name: mac
+          path: dist/wc3proxy.dmg
+
+  build-win:
+    name: Microsoft Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build EXE
+        shell: bash
+        run: ./scripts/build-windows-x64
+      - name: Upload EXE
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows
+          path: dist/wc3proxy.exe
+
+  release-task:
+    name: release-task
+    runs-on: ubuntu-latest
+    needs: [build-linux, build-mac, build-win]
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
+      - name: Directory structure
+        shell: bash
+        run: find . -type f
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
+      - name: Upload Windows EXE
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./windows/wc3proxy.exe
+          asset_name: wc3proxy.exe
+          asset_content_type: application/octet-stream
+      - name: Upload Linux AppImage
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./linux/WC3Proxy.AppImage
+          asset_name: WC3Proxy.AppImage
+          asset_content_type: application/octet-stream
+      - name: Upload macOS DMG
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./mac/wc3proxy.dmg
+          asset_name: wc3proxy.dmg
+          asset_content_type: application/octet-stream
