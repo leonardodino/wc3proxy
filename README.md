@@ -7,20 +7,20 @@ play **Warcraft III** with your remote friends just like if you were all in the 
 
 <br>
 
-<img align="right" alt="mac" src="./media/windows%402x.png?x=4" height="100"/>
-<h2><a href="/#">download for windows</a></h2>
-<br clear="both">
+## [download][releases-page]
+| [![windows](./media/windows%402x.png)][download-windows] | [![mac](./media/mac%402x.png)][download-mac] | [![linux](./media/linux%402x.png)][download-linux] |
+|:---:|:---:|:---:|
+| [**windows**][download-windows] | [**mac**][download-mac] | [**linux**][download-linux] |
 
-<img align="right" alt="windows" src="./media/mac%402x.png?x=4" height="100"/>
-<h2><a href="/#">download for mac</a></h2>
-<br clear="both">
+<br>
 
-<img align="right" alt="linux" src="./media/linux%402x.png?x=4" height="100"/>
-<h2><a href="/#">download for linux</a></h2>
-<br clear="both">
+## how to play
+**requirements**:
+1) everyone has the exact same game version (numbers on the bottom right corner of the menu).
+2) all players must set port `6113` on their game settings (**options** → **gameplay** → **game port**).
+3) download this utility and [`ZeroTier`](https://www.zerotier.com/).
 
-## how to use
-this is how **I had great success playing (pre-reforged versions)** across the atlantic:
+this is how **I had great success playing** on pre-reforged versions:
 1) have everyone in the same [`ZeroTier`](https://www.zerotier.com/) network.
 2) choose one person to host and note their ZeroTier IP address.
 3) all other players need to run [`WC3 Proxy`](https://github.com/leonardodino/wc3proxy) configured to the host IP.
@@ -30,11 +30,18 @@ this is how **I had great success playing (pre-reforged versions)** across the a
 - everyone should be on the same protocol version, and configure it on the proxy
 - please use a stable connection, as there's no relay server between the nodes
 
+<br>
 
 ## credits
-- [original `wc3proxy`](https://github.com/FooleAU/wc3proxy) by @FooleAU
-- [network code cleanup](https://github.com/evshiron/wc3proxy) by @evshiron
-- [`dotnet core` port](https://github.com/marcsanfacon/wc3proxy) by @marcsanfacon
+- [original `wc3proxy`](https://github.com/FooleAU/wc3proxy) by [@FooleAU](https://github.com/FooleAU)
+- [network code cleanup](https://github.com/evshiron/wc3proxy) by [@evshiron](https://github.com/evshiron)
+- [`dotnet core` port](https://github.com/marcsanfacon/wc3proxy) by [@marcsanfacon](https://github.com/marcsanfacon)
 - [moonwell icon](https://www.artstation.com/artwork/YwED6) by [taylormouse](https://taylormouse.artstation.com/)
 - [Warcraft III](https://en.wikipedia.org/wiki/Warcraft_III:_The_Frozen_Throne) by [blizzard](https://blizzard.com/)
 - boredom caused by the `2020 Plague Season™`
+
+[releases-page]: https://github.com/leonardodino/wc3proxy/releases
+<!-- https://github.com/Contextualist/glare  -->
+[download-windows]: https://glare.now.sh/leonardodino/wc3proxy/wc3proxy.exe
+[download-mac]: https://glare.now.sh/leonardodino/wc3proxy/wc3proxy.dmg
+[download-linux]: https://glare.now.sh/leonardodino/wc3proxy/WC3Proxy.AppImage
