@@ -17,7 +17,8 @@ mkdir -p "${MAC_APP_BUNDLE}/Contents/Resources" "${MAC_APP_BUNDLE}/Contents/Shar
 # download tcl 8.6
 TCL_PKG='ActiveTcl-8.6.9.8609.2-macosx10.9-x86_64.pkg'
 TCL_SHA='bd462de2a09198b95c94ac727264f36aebee83f0ac9aab7260150c4f5e0f5c3b'
-curl -sko "tmp/${TCL_PKG}" "https://downloads.activestate.com/ActiveTcl/releases/8.6.9.0/${TCL_PKG}"
+TCL_URL="https://downloads.activestate.com/ActiveTcl/releases/8.6.9.0/${TCL_PKG}"
+curl -Lso "tmp/${TCL_PKG}" "https://web.archive.org/web/20200814040913if_/${TCL_URL}"
 shasum -c <<< "$TCL_SHA *tmp/${TCL_PKG}"
 
 # download create-dmg
