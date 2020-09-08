@@ -1,6 +1,8 @@
 name: Build
 on: [push]
 
+defaults: {run: {shell: bash}}
+
 jobs:
   build-linux:
     name: Linux
@@ -9,7 +11,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build Linux AppImage
-        shell: bash
         run: ./scripts/build-linux-x64
       - name: Upload Linux AppImage
         uses: actions/upload-artifact@v2
@@ -18,13 +19,12 @@ jobs:
           path: dist/WC3Proxy.*
 
   build-mac:
-    name: macOS
+    name: Mac
     runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build DMG
-        shell: bash
         run: ./scripts/build-mac-x64
       - name: Upload DMG
         uses: actions/upload-artifact@v2
@@ -33,13 +33,12 @@ jobs:
           path: dist/wc3proxy.dmg
 
   build-win:
-    name: Microsoft Windows
+    name: Windows
     runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build EXE
-        shell: bash
         run: ./scripts/build-windows-x64
       - name: Upload EXE
         uses: actions/upload-artifact@v2
@@ -48,26 +47,24 @@ jobs:
           path: dist/wc3proxy.exe
 
   release-task:
-    name: release-task
+    name: Upload
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     needs: [build-linux, build-mac, build-win]
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v2
-      - name: Directory structure
-        shell: bash
-        run: find . -type f
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: v0.0.${{ github.run_number }}
+          release_name: ":package: v0.0.${{ github.run_number }}"
           draft: true
-          prerelease: true
-      - name: Upload Windows EXE
+          prerelease: false
+      - name: Upload wc3proxy.exe (Windows)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +73,7 @@ jobs:
           asset_path: ./windows/wc3proxy.exe
           asset_name: wc3proxy.exe
           asset_content_type: application/octet-stream
-      - name: Upload Linux AppImage
+      - name: Upload WC3Proxy.AppImage (Linux)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -85,7 +82,16 @@ jobs:
           asset_path: ./linux/WC3Proxy.AppImage
           asset_name: WC3Proxy.AppImage
           asset_content_type: application/octet-stream
-      - name: Upload macOS DMG
+      - name: Upload WC3Proxy.AppImage.zsync (Linux)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./linux/WC3Proxy.AppImage.zsync
+          asset_name: WC3Proxy.AppImage.zsync
+          asset_content_type: application/octet-stream
+      - name: Upload wc3proxy.dmg (Mac)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -94,3 +100,9 @@ jobs:
           asset_path: ./mac/wc3proxy.dmg
           asset_name: wc3proxy.dmg
           asset_content_type: application/octet-stream
+      - name: Publish Release
+        run: "hub release edit --draft=false v0.0.${RUN_NUMBER}"
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
