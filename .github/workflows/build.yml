@@ -62,8 +62,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v0.0.${{ github.run_number }}
-          release_name: ":package: v0.0.${{ github.run_number }}"
+          tag_name: "v0.0.${{ github.run_number }}"
+          release_name: "v0.0.${{ github.run_number }}"
           draft: true
           prerelease: false
       - name: Upload wc3proxy.exe (Windows)
