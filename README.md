@@ -17,7 +17,7 @@ play **Warcraft III** with your remote friends just like if you were all in the 
 ## how to play
 **requirements**:
 1) everyone has the exact same game version (numbers on the bottom right corner of the menu).
-2) all players must set port `6113` on their game settings (**options** → **gameplay** → **game port**).
+2) all players must set port `6112` on their game settings (**options** → **gameplay** → **game port**).
 3) download this utility and [`ZeroTier`](https://www.zerotier.com/).
 
 this is how **I had great success playing** on pre-reforged versions:
