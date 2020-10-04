@@ -41,6 +41,6 @@ this is how **I had great success playing** on pre-reforged versions:
 - boredom caused by the `2020 Plague Season™`
 
 [releases-page]: https://github.com/leonardodino/wc3proxy/releases
-[download-windows]: https://github.com/leonardodino/wc3proxy/releases/latest/download/WC3Proxy.AppImage
+[download-windows]: https://github.com/leonardodino/wc3proxy/releases/latest/download/WC3Proxy.exe
 [download-mac]: https://github.com/leonardodino/wc3proxy/releases/latest/download/wc3proxy.dmg
 [download-linux]: https://github.com/leonardodino/wc3proxy/releases/latest/download/WC3Proxy.AppImage
