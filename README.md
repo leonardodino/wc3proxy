@@ -41,7 +41,6 @@ this is how **I had great success playing** on pre-reforged versions:
 - boredom caused by the `2020 Plague Season™`
 
 [releases-page]: https://github.com/leonardodino/wc3proxy/releases
-<!-- https://github.com/Contextualist/glare  -->
-[download-windows]: https://glare.now.sh/leonardodino/wc3proxy/wc3proxy.exe
-[download-mac]: https://glare.now.sh/leonardodino/wc3proxy/wc3proxy.dmg
-[download-linux]: https://glare.now.sh/leonardodino/wc3proxy/WC3Proxy.AppImage
+[download-windows]: https://github.com/leonardodino/wc3proxy/releases/latest/download/WC3Proxy.AppImage
+[download-mac]: https://github.com/leonardodino/wc3proxy/releases/latest/download/wc3proxy.dmg
+[download-linux]: https://github.com/leonardodino/wc3proxy/releases/latest/download/WC3Proxy.AppImage
