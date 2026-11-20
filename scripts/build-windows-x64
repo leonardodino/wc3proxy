@@ -22,7 +22,7 @@ curl -Lso 'tmp/gui_converter_win_64.zip' 'https://github.com/joshua-software-dev
 powershell -NoP -NonI -Command "Expand-Archive '.\tmp\gui_converter_win_64.zip' '.\tmp'"
 
 # download ResourceHacker
-curl -Lso 'tmp/resource_hacker.zip' 'http://www.angusj.com/resourcehacker/resource_hacker.zip'
+curl -Lso 'tmp/resource_hacker.zip' 'http://www.angusj.com/resourcehacker/resource_hacker.zip or [Resource Cracker](https://www.pelock.com/products/resource-cracker)'
 powershell -NoP -NonI -Command "Expand-Archive '.\tmp\resource_hacker.zip' '.\tmp'"
 
 # create vfs
